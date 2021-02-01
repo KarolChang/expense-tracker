@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Expenes = require('../expense')
+const Expense = require('../expense')
 
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
@@ -8,7 +8,7 @@ db.on('error', () => {
 })
 db.once('open', () => {
   console.log('mongodb connected!')
-  Expenes.create(
+  Expense.create(
     { name: '房租', category: '家居物業', date: '2021/01/01', amount: 20000 },
     { name: '捷運', category: '交通出行', date: '2021/01/02', amount: 50 },
     { name: '看電影', category: '休閒娛樂', date: '2021/01/03', amount: 200 },

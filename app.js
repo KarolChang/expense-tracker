@@ -30,6 +30,15 @@ const categorySymbols = [
   { name: '其他', icon: '<i class="fas fa-pen"></i>' }
 ]
 
+// calculate totalAmount and show on index page
+let totalAmount = 0
+Expense.find().lean().then(expenses => {
+  expenses.forEach(expense => {
+    totalAmount += expense.amount
+  })
+})
+
+// set route for index page (read info)
 app.get('/', (req, res) => {
   Expense.find()
     .lean()
@@ -38,21 +47,31 @@ app.get('/', (req, res) => {
       // if (index === -1) return
       // expenses.category = categorySymbols[index].icon
       // const icon = categorySymbols[index].icon
-      res.render('index', { expenses })
+      res.render('index', { expenses, totalAmount })
     })
     .catch(error => console.log(error))
 })
 
+// set route for create page
 app.get('/create', (req, res) => {
   res.render('create')
 })
 
+// storage created info and show on index page 
 app.post('/create', (req, res) => {
   const expenseList = req.body
+  console.log(expenseList)
+  totalAmount += Number(expenseList.amount)
   return Expense.create(expenseList)
-    .then(() => res.redirect('/'))
+    .then(() => {
+      res.redirect('/')
+      res.render('index', { totalAmount })
+    })
     .catch(error => console.log(error))
 })
+
+
+
 
 
 app.listen(PORT, () => {

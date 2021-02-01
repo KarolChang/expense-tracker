@@ -1,7 +1,3 @@
-資料:
-expense list = {name: lunch, category: eat, date: 20210101 , amount: 100}
-totalAmount = 0
-
 畫面:
 index
 create
@@ -13,7 +9,7 @@ category
 crud
 
 在首頁一次瀏覽所有支出的清單   ok
-在首頁看到所有支出清單的總金額   
+在首頁看到所有支出清單的總金額   ok
 新增一筆支出     ok
 編輯支出的所有屬性 (一次只能編輯一筆)
 刪除任何一筆支出 (一次只能刪除一筆)

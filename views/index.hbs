@@ -21,7 +21,7 @@
   {{!-- Expense List --}}
   <div class="container-fluid mt-3">
     <ul class="list-group">
-      {{#each expenses}}
+      {{#each records}}
       <li class="list-group-item">
         <div class="row align-items-center">
           <div class="col-6 d-flex align-items-center">
@@ -38,8 +38,8 @@
           </div>
           <div class="col-4">
             <div class="btns">
-              <a href="/edit" class="btn btn-warning">修改</a>
-              <a href="/" class="btn btn-danger">刪除</a>
+              <a href="/record/{{this._id}}/edit" class="btn btn-warning">修改</a>
+              <a href="/record/{{this._id}}/delete" class="btn btn-danger">刪除</a>
             </div>
           </div>
         </div>
@@ -49,5 +49,5 @@
   </div>
 
   {{!-- Create Button --}}
-  <a href="/create" method="POST" class="btn btn-success">新增支出</a>
+  <a href="/record/create" method="POST" class="btn btn-success">新增支出</a>
 </div>

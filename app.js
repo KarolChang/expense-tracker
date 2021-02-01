@@ -1,10 +1,10 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
-const bodyParser = require('body-parser')
-const Expense = require('./models/expense')
+const Record = require('./models/record')
 
 const mongoose = require('mongoose')
-const { urlencoded } = require('body-parser')
+const bodyParser = require('body-parser')
+
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', () => {
@@ -31,38 +31,35 @@ const categorySymbols = [
 ]
 
 // calculate totalAmount and show on index page
-let totalAmount = 0
-Expense.find().lean().then(expenses => {
-  expenses.forEach(expense => {
-    totalAmount += expense.amount
-  })
-})
+
 
 // set route for index page (read info)
 app.get('/', (req, res) => {
-  Expense.find()
+  let totalAmount = 0
+  Record.find()
     .lean()
-    .then(expenses => {
+    .then(records => {
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
       // const index = categorySymbols.findIndex(category => expenses.category === category.name)
       // if (index === -1) return
       // expenses.category = categorySymbols[index].icon
       // const icon = categorySymbols[index].icon
-      res.render('index', { expenses, totalAmount })
+      res.render('index', { records, totalAmount })
     })
     .catch(error => console.log(error))
 })
 
 // set route for create page
-app.get('/create', (req, res) => {
+app.get('/record/create', (req, res) => {
   res.render('create')
 })
 
 // storage created info and show on index page 
-app.post('/create', (req, res) => {
+app.post('/record', (req, res) => {
   const expenseList = req.body
-  console.log(expenseList)
-  totalAmount += Number(expenseList.amount)
-  return Expense.create(expenseList)
+  return Record.create(expenseList)
     .then(() => {
       res.redirect('/')
       res.render('index', { totalAmount })
@@ -70,9 +67,26 @@ app.post('/create', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// set route for edit page
+app.get('/record/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .lean()
+    .then(record => res.render('edit', { record }))
+    .catch(error => console.log(error))
+})
 
-
-
+// storage edit info and show on index page
+app.post('/record/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .then(record => {
+      Object.assign(record, req.body)
+      return record.save()
+    })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
 
 app.listen(PORT, () => {
   console.log(`The server is running on http://localhost:${PORT}`)

@@ -39,7 +39,9 @@
           <div class="col-4">
             <div class="btns">
               <a href="/record/{{this._id}}/edit" class="btn btn-warning">修改</a>
-              <a href="/record/{{this._id}}/delete" class="btn btn-danger">刪除</a>
+              <form action="/record/{{this._id}}/delete" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger">刪除</button>
+              </form>
             </div>
           </div>
         </div>

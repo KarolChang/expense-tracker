@@ -15,5 +15,5 @@ db.once('open', () => {
     { name: '午餐', category: '餐飲食品 ', date: '2021-01-04', amount: 80 },
     { name: '電話費', category: '其他 ', date: '2021-01-05', amount: 600 }
   )
-  console.log('create done!')
+  console.log('recordSeeder done!')
 })

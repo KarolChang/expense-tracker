@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const Record = require('./models/record')
+const Category = require('./models/category')
 
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
@@ -21,17 +22,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
-
-const categorySymbols = [
-  { name: '家居物業', icon: '<i class="fas fa-home"></i>' },
-  { name: '交通出行', icon: '<i class="fas fa-shuttle-van"></i>' },
-  { name: '休閒娛樂', icon: '<i class="fas fa-grin-beam"></i>' },
-  { name: '餐飲食品', icon: '<i class="fas fa-utensils"></i>' },
-  { name: '其他', icon: '<i class="fas fa-pen"></i>' }
-]
-
-// calculate totalAmount and show on index page
-
 
 // set route for index page (read info)
 app.get('/', (req, res) => {
@@ -84,6 +74,15 @@ app.post('/record/:id/edit', (req, res) => {
       Object.assign(record, req.body)
       return record.save()
     })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+// delete expense record
+app.post('/record/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .then(record => record.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })

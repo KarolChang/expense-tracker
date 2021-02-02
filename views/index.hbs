@@ -1,12 +1,23 @@
 <div class="container-fluid m-2">
-  <div class="row m-2">
-    <div class="col-2 mt-3" style="text-align:center;">
-      {{!-- Create Button --}}
-      <a href="/record/create" method="POST" class="btn btn-success">新增支出</a>
+  <div class="container mx-5">
+    <div class="row">
+      {{!-- Total amount --}}
+      <div class="container-fluid mt-3">
+        <p style="color:slategray;font-size:3em;margin-left:20px;">總金額: <strong
+            style="color:orange;font-size:1.5em;">{{totalAmount}}</strong></p>
+      </div>
     </div>
-    <div class="col-4">
+    <div class="d-flex justify-content-start" style="width:40%;">
+      {{!-- Create Button --}}
+      <div class="createBtn" style="margin-left: 15px;margin-right:20px;">
+        <a href="/record/create" method="POST" class="btn btn-success">新增支出</a>
+      </div>
+      {{!-- All --}}
+      <div class="allBtn" style="margin-right:20px;">
+        <a href="/" class="btn btn-primary">總覽</a>
+      </div>
       {{!-- Category --}}
-      <div class="category mt-3" style="text-align:center;">
+      <div class="categoryBtn">
         <form action='/record'>
           <select name="category" id="category" class="btn btn-info" onchange="this.form.submit()"
             style="cursor: pointer;">
@@ -21,43 +32,38 @@
         </form>
       </div>
     </div>
-    <div class="col-6">
-      {{!-- Total amount --}}
-      <div class="container-fluid mt-3" style="text-align:center;">
-        <p>總金額: <strong style="color:orange;">{{totalAmount}}</strong></p>
-      </div>
+
+    {{!-- Expense List --}}
+    <div class="container-fluid mt-3">
+      <ul class="list-group">
+        {{#each records}}
+        <li class="list-group-item">
+          <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center">
+              <div class="category-icon" style="margin-right:15px;">
+                {{{this.category}}}
+              </div>
+              <div class="item">
+                <div style="font-size: 1.2em;">{{this.name}}</div>
+                <div style="font-size: 0.5em;">{{this.date}}</div>
+              </div>
+            </div>
+            <div class="col-2">
+              <span style="font-size: 1.5em;">$ {{this.amount}}</span>
+            </div>
+            <div class="col-4">
+              <div class="btns">
+                <a href="/record/{{this._id}}?_method=PUT" class="btn btn-warning">修改</a>
+                <form action="/record/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-danger">刪除</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
     </div>
   </div>
 
-  {{!-- Expense List --}}
-  <div class="container-fluid mt-3">
-    <ul class="list-group">
-      {{#each records}}
-      <li class="list-group-item">
-        <div class="row align-items-center">
-          <div class="col-6 d-flex align-items-center">
-            <div class="category-icon" style="margin-right:15px;">
-              {{{this.category}}}
-            </div>
-            <div class="item">
-              <div style="font-size: 1.2em;">{{this.name}}</div>
-              <div style="font-size: 0.5em;">{{this.date}}</div>
-            </div>
-          </div>
-          <div class="col-2">
-            <span style="font-size: 1.5em;">{{this.amount}}</span>
-          </div>
-          <div class="col-4">
-            <div class="btns">
-              <a href="/record/{{this._id}}?_method=PUT" class="btn btn-warning">修改</a>
-              <form action="/record/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
-                <button type="submit" class="btn btn-danger">刪除</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </li>
-      {{/each}}
-    </ul>
-  </div>
 </div>

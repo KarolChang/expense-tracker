@@ -1,13 +1,7 @@
-const mongoose = require('mongoose')
 const Record = require('../record')
+const db = require('../../config/mongoose')
 
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-const db = mongoose.connection
-db.on('error', () => {
-  console.log('mongodb error!')
-})
 db.once('open', () => {
-  console.log('mongodb connected!')
   Record.create(
     { name: '房租', category: '家居物業', date: '2021-01-01', amount: 20000, categoryIcon: '<i class="fas fa-home"></i>' },
     { name: '捷運', category: '交通出行', date: '2021-01-02', amount: 50, categoryIcon: '<i class="fas fa-shuttle-van"></i>' },

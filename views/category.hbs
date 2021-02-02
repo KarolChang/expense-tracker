@@ -7,10 +7,8 @@
     <div class="col-4">
       {{!-- Category --}}
       <div class="category mt-3" style="text-align:center;">
-        <form action='/record'>
-          <select name="category" id="category" class="btn btn-info" onchange="this.form.submit()"
-            style="cursor: pointer;">
-            <option style="display:none" selected>{{#if category}}{{category}}{{else}}類別{{/if}}</option>
+        <form action='/category/{{categoryName}}'>
+          <select name="category" id="category" onchange="this.form.submit()">
             <option style="display: none;">類別</option>
             <option>家居物業</option>
             <option>交通出行</option>
@@ -32,12 +30,12 @@
   {{!-- Expense List --}}
   <div class="container-fluid mt-3">
     <ul class="list-group">
-      {{#each records}}
+      {{#each filteredRecord}}
       <li class="list-group-item">
         <div class="row align-items-center">
           <div class="col-6 d-flex align-items-center">
             <div class="category-icon" style="margin-right:15px;">
-              {{{this.category}}}
+              {{this.category}}
             </div>
             <div class="item">
               <div style="font-size: 1.2em;">{{this.name}}</div>

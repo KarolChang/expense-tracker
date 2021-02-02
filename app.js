@@ -31,11 +31,10 @@ app.get('/', (req, res) => {
     .then(records => {
       records.forEach(record => {
         totalAmount += record.amount
+        // Category.find({ category: record.category })
+        //   .lean()
+        //   .then(category => record.$push({ icon: [category.icon] }))
       })
-      // const index = categorySymbols.findIndex(category => expenses.category === category.name)
-      // if (index === -1) return
-      // expenses.category = categorySymbols[index].icon
-      // const icon = categorySymbols[index].icon
       res.render('index', { records, totalAmount })
     })
     .catch(error => console.log(error))
@@ -86,6 +85,29 @@ app.post('/record/:id/delete', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+
+// choose category
+app.get('/record', (req, res) => {
+  const category = req.query.category
+  let totalAmount = 0
+  Record.find({ category })
+    .lean()
+    .then(records => {
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
+      res.render('index', { records, totalAmount, category })
+    })
+    .catch(error => console.log(error))
+})
+
+
+
+
+
+
+
+
 
 app.listen(PORT, () => {
   console.log(`The server is running on http://localhost:${PORT}`)

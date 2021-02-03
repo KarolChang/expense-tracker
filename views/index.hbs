@@ -41,7 +41,7 @@
           <div class="row align-items-center">
             <div class="col-6 d-flex align-items-center">
               <div class="category-icon" style="margin-right:15px;">
-                {{{this.category}}}
+                {{{this.categoryIcon}}}
               </div>
               <div class="item">
                 <div style="font-size: 1.2em;">{{this.name}}</div>
@@ -55,7 +55,7 @@
               <div class="btns">
                 <a href="/record/{{this._id}}?_method=PUT" class="btn btn-warning">修改</a>
                 <form action="/record/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
-                  <button type="submit" class="btn btn-danger">刪除</button>
+                  <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete">刪除</button>
                 </form>
               </div>
             </div>
@@ -65,5 +65,4 @@
       </ul>
     </div>
   </div>
-
 </div>

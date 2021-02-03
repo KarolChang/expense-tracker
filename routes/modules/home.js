@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
-// const Category = require('./models/category')
 
 // set route for index page (read info)
 router.get('/', (req, res) => {
@@ -11,9 +10,6 @@ router.get('/', (req, res) => {
     .then(records => {
       records.forEach(record => {
         totalAmount += record.amount
-        // Category.find({ category: record.category })
-        //   .lean()
-        //   .then(category => record.$push({ icon: [category.icon] }))
       })
       res.render('index', { records, totalAmount })
     })

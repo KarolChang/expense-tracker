@@ -67,7 +67,7 @@ router.delete('/:id', (req, res) => {
 router.get('/', (req, res) => {
   const category = req.query.category
   let totalAmount = 0
-  Record.find({ category })
+  return Record.find({ category })
     .lean()
     .then(records => {
       records.forEach(record => {

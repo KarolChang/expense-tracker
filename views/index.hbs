@@ -54,9 +54,25 @@
             <div class="col-4">
               <div class="btns">
                 <a href="/record/{{this._id}}?_method=PUT" class="btn btn-warning">修改</a>
-                <form action="/record/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
-                  <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete">刪除</button>
-                </form>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                  data-bs-target="#delete{{this._id}}">刪除</button>
+                <!-- Modal -->
+                <div class="modal fade" id="delete{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        確認刪除 {{this.name}} 這筆支出資料?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">取消</button>
+                        <form action="/record/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
+                          <button type="submit" class="btn btn-danger">確定刪除</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

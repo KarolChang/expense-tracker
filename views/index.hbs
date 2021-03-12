@@ -39,7 +39,7 @@
         {{#each records}}
         <li class="list-group-item">
           <div class="row align-items-center">
-            <div class="col-6 d-flex align-items-center">
+            <div class="col-3 d-flex align-items-center">
               <div class="category-icon" style="margin-right:15px;">
                 {{{this.categoryIcon}}}
               </div>
@@ -47,6 +47,9 @@
                 <div style="font-size: 1.2em;">{{this.name}}</div>
                 <div style="font-size: 0.5em;">{{this.date}}</div>
               </div>
+            </div>
+            <div class="col-3">
+              <span style="font-size: 1.2em;"><i class="fas fa-store"></i> {{this.merchant}}</span>
             </div>
             <div class="col-2">
               <span style="font-size: 1.5em;">$ {{this.amount}}</span>

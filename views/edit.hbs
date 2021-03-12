@@ -1,4 +1,4 @@
-<div id="edit-form" style="width:40%;margin:20px auto;">
+<div id="edit-form" style="width:40%;margin:2em auto;">
   <form action="/record/{{record._id}}?_method=PUT" method="POST">
     <div class="form-group">
       <label for="category">類別</label>
@@ -12,8 +12,8 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="item">項目</label>
-      <input type="text" class="form-control" id="item" placeholder="..." name="name" value="{{record.name}}" required>
+      <label for="name">項目</label>
+      <input type="text" class="form-control" id="name" placeholder="..." name="name" value="{{record.name}}" required>
     </div>
     <div class="form-group">
       <label for="date">日期</label>
@@ -23,6 +23,11 @@
       <label for="amount">金額</label>
       <input type="number" class="form-control" id="amount" placeholder="..." name="amount" value="{{record.amount}}"
         required>
+    </div>
+    <div class="form-group">
+      <label for="merchant">商家</label>
+      <input type="text" class="form-control" id="merchant" placeholder="..." name="merchant"
+        value="{{record.merchant}}" required>
     </div>
     <button type="submit" class="btn btn-success" style="margin-top: 20px;">送出編輯</button>
   </form>

@@ -17,6 +17,10 @@ const recordSchema = new Schema({
     type: Number,
     required: true
   },
+  merchant: {
+    type: String,
+    required: true
+  },
   categoryIcon: {
     type: String
   }

@@ -63,7 +63,7 @@ router.delete('/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// choose category
+// choose category // choose month
 router.get('/', (req, res) => {
   const category = req.query.category
   let totalAmount = 0
@@ -77,5 +77,6 @@ router.get('/', (req, res) => {
     })
     .catch(error => console.log(error))
 })
+
 
 module.exports = router

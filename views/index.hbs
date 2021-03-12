@@ -35,9 +35,9 @@
       <div class="monthBtn">
         <form action='/record'>
           <select name="month" id="month" class="btn btn-info" onchange="this.form.submit()" style="cursor: pointer;">
-            <option style="display:none" selected>{{#if chosenMonth}}{{chosenMonth}}{{else}}月份{{/if}}</option>
+            <option style="display:none" selected>{{#if month}}{{chosenMonth}}{{else}}月份{{/if}}</option>
             <option style="display: none;">月份</option>
-            {{#each month}}
+            {{#each months}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
           </select>

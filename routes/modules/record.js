@@ -63,17 +63,20 @@ router.delete('/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// choose category // choose month
+// choose category
+// choose month
 router.get('/', (req, res) => {
   const category = req.query.category
+  const month = req.query.month
   let totalAmount = 0
-  return Record.find({ category })
+  return Record.find(
+    { category })
     .lean()
     .then(records => {
       records.forEach(record => {
         totalAmount += record.amount
       })
-      res.render('index', { records, totalAmount, category })
+      res.render('index', { records, totalAmount, category, month})
     })
     .catch(error => console.log(error))
 })

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
+const { showYearMonth, showYearMonthDate } = require('../../public/dateFormat')
 
 // set route for create page
 router.get('/create', (req, res) => {
@@ -31,7 +32,11 @@ router.get('/:id', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
     .lean()
-    .then(record => res.render('edit', { record }))
+    .then(record => {
+      // 給畫面呈現的日期格式
+      record.date = showYearMonthDate(record)
+      return res.render('edit', { record })
+    })
     .catch(error => console.log(error))
 })
 
@@ -62,24 +67,5 @@ router.delete('/:id', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
-
-// choose category
-// choose month
-router.get('/', (req, res) => {
-  const category = req.query.category
-  const month = req.query.month
-  let totalAmount = 0
-  return Record.find(
-    { category })
-    .lean()
-    .then(records => {
-      records.forEach(record => {
-        totalAmount += record.amount
-      })
-      res.render('index', { records, totalAmount, category, month})
-    })
-    .catch(error => console.log(error))
-})
-
 
 module.exports = router

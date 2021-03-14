@@ -7,7 +7,8 @@ const { showYearMonth, showYearMonthDate } = require('../../public/dateFormat')
 router.get('/', (req, res) => {
   let totalAmount = 0
   let months = []
-  Record.find()
+  const userId = req.user._id
+  Record.find({ userId })
     .lean()
     .sort({ date: 'desc' })
     .then(records => {
@@ -28,6 +29,7 @@ router.get('/', (req, res) => {
 
 // filter Category & Month
 router.get('/filter', (req, res) => {
+  const userId = req.user._id
   let totalAmount = 0
   let months = []
   const category = req.query.category
@@ -35,7 +37,7 @@ router.get('/filter', (req, res) => {
   if (category === '全部類別' && month === '全部月份') {
     return res.redirect('/')
   } else if (category === '全部類別') {
-    Record.find()
+    Record.find({ userId })
       .lean()
       .sort({ date: 'desc' })
       .then(recordList => {
@@ -54,7 +56,7 @@ router.get('/filter', (req, res) => {
       })
       .catch(error => console.log(error))
   } else if (month === '全部月份') {
-    Record.find({ category })
+    Record.find({ category, userId })
       .lean()
       .sort({ date: 'desc' })
       .then(records => {
@@ -72,7 +74,7 @@ router.get('/filter', (req, res) => {
       })
       .catch(error => console.log(error))
   } else {
-    Record.find({ category })
+    Record.find({ category, userId })
       .lean()
       .sort({ date: 'desc' })
       .then(recordList => {

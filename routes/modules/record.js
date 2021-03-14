@@ -9,9 +9,10 @@ router.get('/create', (req, res) => {
   res.render('create')
 })
 
-// storage created info and show on index page 
+// storage created info and show on index page
 router.post('/', (req, res) => {
   const records = req.body
+  records.userId = req.user._id
   Category.find()
     .lean()
     .then(categories => {
@@ -28,8 +29,9 @@ router.post('/', (req, res) => {
 
 // set route for edit page
 router.get('/:id', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({ userId, _id })
     .lean()
     .then(record => {
       // 給畫面呈現的日期格式
@@ -41,7 +43,8 @@ router.get('/:id', (req, res) => {
 
 // storage edit info and show on index page
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   const recordEdit = req.body
   Category.find()
     .lean()
@@ -49,7 +52,7 @@ router.put('/:id', (req, res) => {
       const category = categories.find(category => category.name === recordEdit.category)
       recordEdit.categoryIcon = category.icon
     })
-  return Record.findById(id)
+  return Record.findOne({ userId, _id })
     .then(record => {
       Object.assign(record, recordEdit)
       return record.save()
@@ -60,8 +63,9 @@ router.put('/:id', (req, res) => {
 
 // delete expense record
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({ userId, _id })
     .then(record => record.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))

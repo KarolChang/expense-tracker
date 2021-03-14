@@ -9,10 +9,10 @@ module.exports = app => {
     User.findOne({ email })
       .then(user => {
         if (!user) {
-          return done(null, false, { message: 'This email has not been registered!' })
+          return done(null, false, { type: 'warning_msg', message: '此信箱未被註冊!' })
         }
         if (user.password !== password) {
-          return done(null, false, { message: 'Email or Password incorrect!' })
+          return done(null, false, { type: 'warning_msg', message: '信箱或密碼不正確!' })
         }
         return done(null, user)
       })

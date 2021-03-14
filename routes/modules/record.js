@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
-const { showYearMonth, showYearMonthDate } = require('../../public/dateFormat')
+const { showYearMonthDate } = require('../../public/dateFormat')
 
 // set route for create page
 router.get('/create', (req, res) => {
@@ -25,7 +25,6 @@ router.post('/', (req, res) => {
     })
     .catch(error => console.log(error))
 })
-
 
 // set route for edit page
 router.get('/:id', (req, res) => {

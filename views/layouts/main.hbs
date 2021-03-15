@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Expense Tracker For Father</title>
-  <link href="https://bootswatch.com/4/darkly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="https://bootswatch.com/4/cyborg/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
 
 <body>
@@ -23,9 +23,9 @@
       </button>
     </div>
     {{#if isAuthenticated}}
-    <a href="/users/logout" class="btn btn-outline-warning">Logout</a>
+    <a href="/users/logout" class="btn btn-warning">Logout</a>
     {{else}}
-    <a href="/users/login" class="btn btn-outline-success">Login</a>
+    <a href="/users/login" class="btn btn-warning">Login</a>
     {{/if}}
   </nav>
   {{{body}}}

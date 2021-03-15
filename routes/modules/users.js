@@ -21,6 +21,7 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   const errors = []
+  const registeredMessage = `${email}註冊成功!`
   if (!name || !email || !password || !confirmPassword) {
     errors.push({ message: '所有欄位都是必填的!'})
   }
@@ -44,7 +45,7 @@ router.post('/register', (req, res) => {
           password: hash
         }))
     })
-    .then(() => res.render('login', { email }))
+    .then(() => res.render('login', { email, registeredMessage }))
     .catch(err => console.log(err))
 })
 

@@ -1,4 +1,7 @@
 const Category = require('../category')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const db = require('../../config/mongoose')
 
 db.once('open', () => {

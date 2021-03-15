@@ -41,14 +41,16 @@ router.get('/filter', (req, res) => {
       .lean()
       .sort({ date: 'desc' })
       .then(recordList => {
+        recordList.forEach(record => {
+          // 顯示 以月份篩選 的欄位
+          months.push(showYearMonth(record))
+          months = months.filter(function (e, i, s) {
+            return s.indexOf(e) === i
+          })
+        }) 
         const records = recordList.filter(record => showYearMonth(record) === month)
         records.forEach(record => {
           totalAmount += record.amount
-          // 顯示 以月份篩選 的欄位
-          months.push(showYearMonth(record))
-          months = months.filter(function(e, i, s) {
-            return s.indexOf(e) === i
-          })
           // 給畫面呈現的日期格式
           record.date = showYearMonthDate(record)
         })

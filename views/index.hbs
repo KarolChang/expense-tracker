@@ -1,17 +1,17 @@
 <div class="container-fluid m-2">
   <div class="container mx-5">
-    <div class="row mt-5">
+    <div class="row mt-5 mb-3">
       {{!-- Total amount --}}
       <div class="container-fluid d-flex">
-        <div class="col-sm-3 text-center">
+        <div class="col-sm-4 text-center">
           <h2 style="color:slategray;font-size:2.5em">收入金額</h2>
           <h3 class="lead" style="color:lawngreen;font-size:5em;font-weight:700;">{{totalIncome}}</h3>
         </div>
-        <div class="col-sm-3 text-center">
+        <div class="col-sm-4 text-center">
           <h2 style="color:slategray;font-size:2.5em">支出金額</h2>
           <h3 class="lead" style="color:white;font-size:5em;font-weight:700;">{{totalExpense}}</h3>
         </div>
-        <div class="col-sm-3 text-center">
+        <div class="col-sm-4 text-center">
           <h2 style="color:slategray;font-size:2.5em">盈餘</h2>
           <h3 class="lead" style="color:orange;font-size:5em;font-weight:700;">{{totalProfit}}</h3>
         </div>
@@ -58,7 +58,7 @@
         </form>
       </div>
     </div>
-
+    {{> message}}
     {{!-- Expense List --}}
     <div class="container-fluid mt-3">
       <ul class="list-group">
@@ -103,7 +103,7 @@
             </div>
             <div class="col-4">
               <div class="btns">
-                <a href="/record/{{this._id}}?_method=PUT" class="btn btn-warning mr-2">修改</a>
+                <a href="/record/{{this._id}}?_method=PUT" class="btn btn-warning mr-2">編輯</a>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-danger" data-toggle="modal"
                   data-target="#delete{{this._id}}">刪除</button>

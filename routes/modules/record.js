@@ -22,6 +22,7 @@ router.post('/', (req, res) => {
       return Record.create(records)
     })
     .then(() => {
+      req.flash('success_msg', `「${records.sort} - ${records.name}」新增成功!`)
       res.redirect('/')
     })
     .catch(error => console.log(error))
@@ -57,7 +58,10 @@ router.put('/:id', (req, res) => {
       Object.assign(record, recordEdit)
       return record.save()
     })
-    .then(() => res.redirect('/'))
+    .then(record => {
+      req.flash('success_msg', `「${record.sort} - ${record.name}」編輯成功!`)
+      res.redirect('/')
+    })
     .catch(error => console.log(error))
 })
 

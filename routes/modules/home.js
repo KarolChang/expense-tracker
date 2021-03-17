@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
-const { showYearMonth, showYearMonthDate } = require('../../public/dateFormat')
+const { showYearMonth, showYearMonthDate, renderMonthFilter } = require('../../utils/dateFormat')
 
 // set route for index page (read info)
 router.get('/', (req, res) => {
@@ -12,14 +12,12 @@ router.get('/', (req, res) => {
     .lean()
     .sort({ date: 'desc' })
     .then(records => {
-      records.forEach((record, index) => {
-        totalAmount += record.amount
+      records.forEach(record => {
         // 顯示 以月份篩選 的欄位
-        months.push(showYearMonth(record))
-        months = months.filter(function(e, i, s) {
-          return s.indexOf(e) === i
-        })
-        // 給畫面呈現的日期格式
+        months = renderMonthFilter(record, months)
+        // 顯示 總金額
+        totalAmount += record.amount
+        // 顯示 日期格式
         record.date = showYearMonthDate(record)
       })
       res.render('index', { records, totalAmount, months })
@@ -43,15 +41,13 @@ router.get('/filter', (req, res) => {
       .then(recordList => {
         recordList.forEach(record => {
           // 顯示 以月份篩選 的欄位
-          months.push(showYearMonth(record))
-          months = months.filter(function (e, i, s) {
-            return s.indexOf(e) === i
-          })
+          months = renderMonthFilter(record, months)
         })
         const records = recordList.filter(record => showYearMonth(record) === month)
         records.forEach(record => {
+          // 顯示 總金額
           totalAmount += record.amount
-          // 給畫面呈現的日期格式
+          // 顯示 日期格式
           record.date = showYearMonthDate(record)
         })
         res.render('index', { records, totalAmount, month, months })
@@ -64,12 +60,10 @@ router.get('/filter', (req, res) => {
       .then(records => {
         records.forEach(record => {
           // 顯示 以月份篩選 的欄位
-          months.push(showYearMonth(record))
-          months = months.filter(function(e, i, s) {
-            return s.indexOf(e) === i
-          })
+          months = renderMonthFilter(record, months)
+          // 顯示 總金額
           totalAmount += record.amount
-          // 給畫面呈現的日期格式
+          // 顯示 日期格式
           record.date = showYearMonthDate(record)
         })
         res.render('index', { records, totalAmount, category, months })
@@ -80,17 +74,15 @@ router.get('/filter', (req, res) => {
       .lean()
       .sort({ date: 'desc' })
       .then(recordList => {
-        // 顯示 以月份篩選 的欄位
         recordList.forEach(record => {
-          months.push(showYearMonth(record))
-          months = months.filter(function(e, i, s) {
-            return s.indexOf(e) === i
-          })
+          // 顯示 以月份篩選 的欄位
+          months = renderMonthFilter(record, months)
         })
         const records = recordList.filter(record => showYearMonth(record) === month)
         records.forEach(record => {
+          // 顯示 總金額
           totalAmount += record.amount
-          // 給畫面呈現的日期格式
+          // 顯示 日期格式
           record.date = showYearMonthDate(record)
         })
         res.render('index', { records, totalAmount, category, month, months })

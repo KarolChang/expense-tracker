@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
-const { showYearMonthDate } = require('../../public/dateFormat')
+const { showYearMonthDate } = require('../../utils/dateFormat')
 
 // set route for create page
 router.get('/create', (req, res) => {
@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
     })
     .then(() => {
       res.redirect('/')
-      res.render('index', { records })
+      // res.render('index', { records })
     })
     .catch(error => console.log(error))
 })

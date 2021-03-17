@@ -47,7 +47,7 @@ router.get('/filter', (req, res) => {
           months = months.filter(function (e, i, s) {
             return s.indexOf(e) === i
           })
-        }) 
+        })
         const records = recordList.filter(record => showYearMonth(record) === month)
         records.forEach(record => {
           totalAmount += record.amount

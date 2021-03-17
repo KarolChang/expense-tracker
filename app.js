@@ -18,6 +18,26 @@ const app = express()
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
+// 使用 Handlebars 自定義 helper
+const Handlebars = require('handlebars')
+Handlebars.registerHelper('compare', function(left, operator, right, options) {
+  if (arguments.length < 3) {
+    throw new Error('Handlerbars Helper "compare" needs 2 parameters')
+  }
+  let operators = {
+    '===': function (l, r) { return l === r },
+  }
+  if (!operators[operator]) {
+    throw new Error('Handlerbars Helper "compare" doesn\'t know the operator ' + operator)
+  }
+  let result = operators[operator](left, right)
+  if (result) {
+    return options.fn(this)
+  } else {
+    return options.inverse(this)
+  }
+})
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,

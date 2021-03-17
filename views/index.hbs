@@ -1,16 +1,26 @@
 <div class="container-fluid m-2">
   <div class="container mx-5">
-    <div class="row">
+    <div class="row mt-5">
       {{!-- Total amount --}}
-      <div class="container-fluid mt-3">
-        <p style="color:slategray;font-size:3em;margin-left:20px;">總金額: <strong
-            style="color:orange;font-size:1.5em;">{{totalAmount}}</strong></p>
+      <div class="container-fluid d-flex">
+        <div class="col-sm-3 text-center">
+          <h2 style="color:slategray;font-size:2.5em">收入金額</h2>
+          <h3 class="lead" style="color:lawngreen;font-size:5em;font-weight:700;">{{totalIncome}}</h3>
+        </div>
+        <div class="col-sm-3 text-center">
+          <h2 style="color:slategray;font-size:2.5em">支出金額</h2>
+          <h3 class="lead" style="color:white;font-size:5em;font-weight:700;">{{totalExpense}}</h3>
+        </div>
+        <div class="col-sm-3 text-center">
+          <h2 style="color:slategray;font-size:2.5em">盈餘</h2>
+          <h3 class="lead" style="color:orange;font-size:5em;font-weight:700;">{{totalProfit}}</h3>
+        </div>
       </div>
     </div>
     <div class="d-flex justify-content-start mb-4">
       {{!-- Create Button --}}
       <div class="createBtn" style="margin-left: 15px;margin-right:20px;">
-        <a href="/record/create" method="POST" class="btn btn-success">新增支出</a>
+        <a href="/record/create" method="POST" class="btn btn-success">新增支出 or 收入</a>
       </div>
       {{!-- All --}}
       <div class="allBtn" style="margin-right:20px;">
@@ -30,7 +40,9 @@
               <option>交通出行</option>
               <option>休閒娛樂</option>
               <option>餐飲食品</option>
-              <option>其他</option>
+              <option>其他支出</option>
+              <option>薪水</option>
+              <option>其他收入</option>
             </select>
           </div>
           {{!-- Month --}}
@@ -72,7 +84,7 @@
         </li>
         {{!-- records --}}
         {{#each records}}
-        <li class="list-group-item">
+        <li class="list-group-item" {{#if this.expense}}style="color:white;" {{else}}style="color:lawngreen;" {{/if}}>
           <div class="row align-items-center">
             <div class="col-3 d-flex align-items-center">
               <div class="category-icon" style="width:4em;">

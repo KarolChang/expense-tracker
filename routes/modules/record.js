@@ -12,8 +12,9 @@ router.get('/create', (req, res) => {
 // storage created info and show on index page
 router.post('/', (req, res) => {
   const records = req.body
+  const sort = records.sort
   records.userId = req.user._id
-  Category.find()
+  Category.find({ sort })
     .lean()
     .then(categories => {
       const category = categories.find(category => records.category === category.name)
@@ -22,7 +23,6 @@ router.post('/', (req, res) => {
     })
     .then(() => {
       res.redirect('/')
-      // res.render('index', { records })
     })
     .catch(error => console.log(error))
 })

@@ -5,9 +5,23 @@ const { showYearMonth, showYearMonthDate, renderMonthFilter } = require('../../u
 
 // set route for index page (read info)
 router.get('/', (req, res) => {
-  let totalAmount = 0
+  let totalExpense = 0
+  let totalIncome = 0
+  let totalProfit = 0
   let months = []
   const userId = req.user._id
+  // 顯示 收入金額
+  Record.find({ userId, sort: '收入' })
+    .lean()
+    .then(records => records.forEach(record => {
+      totalIncome += record.amount
+    }))
+  // 顯示 支出金額
+  Record.find({ userId, sort: '支出' })
+    .lean()
+    .then(records => records.forEach(record => {
+      totalExpense += record.amount
+    }))
   Record.find({ userId })
     .lean()
     .sort({ date: 'desc' })
@@ -15,12 +29,15 @@ router.get('/', (req, res) => {
       records.forEach(record => {
         // 顯示 以月份篩選 的欄位
         months = renderMonthFilter(record, months)
-        // 顯示 總金額
-        totalAmount += record.amount
         // 顯示 日期格式
         record.date = showYearMonthDate(record)
+        // 顯示 收入、支出用顏色區別
+        const sort = record.sort === '收入' ? false : true
+        record.expense = sort
       })
-      res.render('index', { records, totalAmount, months })
+      // 計算 盈餘
+      totalProfit = totalIncome - totalExpense
+      res.render('index', { records, totalExpense, months, totalIncome, totalProfit })
     })
     .catch(error => console.log(error))
 })
@@ -28,7 +45,9 @@ router.get('/', (req, res) => {
 // filter Category & Month
 router.get('/filter', (req, res) => {
   const userId = req.user._id
-  let totalAmount = 0
+  let totalExpense = 0
+  let totalIncome = 0
+  let totalProfit = 0
   let months = []
   const category = req.query.category
   const month = req.query.month
@@ -45,12 +64,21 @@ router.get('/filter', (req, res) => {
         })
         const records = recordList.filter(record => showYearMonth(record) === month)
         records.forEach(record => {
-          // 顯示 總金額
-          totalAmount += record.amount
+          // 顯示 金額
+          if (record.sort === '收入') {
+            totalIncome += record.amount
+          }
+          if (record.sort === '支出') {
+            totalExpense += record.amount
+          }
+          totalProfit = totalIncome - totalExpense
           // 顯示 日期格式
           record.date = showYearMonthDate(record)
+          // 顯示 收入、支出用顏色區別
+          const sort = record.sort === '收入' ? false : true
+          record.expense = sort
         })
-        res.render('index', { records, totalAmount, month, months })
+        res.render('index', { records, totalExpense, month, months, totalIncome, totalProfit })
       })
       .catch(error => console.log(error))
   } else if (month === '全部月份') {
@@ -61,12 +89,21 @@ router.get('/filter', (req, res) => {
         records.forEach(record => {
           // 顯示 以月份篩選 的欄位
           months = renderMonthFilter(record, months)
-          // 顯示 總金額
-          totalAmount += record.amount
+          // 顯示 金額
+          if (record.sort === '收入') {
+            totalIncome += record.amount
+          }
+          if (record.sort === '支出') {
+            totalExpense += record.amount
+          }
+          totalProfit = totalIncome - totalExpense
           // 顯示 日期格式
           record.date = showYearMonthDate(record)
+          // 顯示 收入、支出用顏色區別
+          const sort = record.sort === '收入' ? false : true
+          record.expense = sort
         })
-        res.render('index', { records, totalAmount, category, months })
+        res.render('index', { records, totalExpense, category, months, totalIncome, totalProfit })
       })
       .catch(error => console.log(error))
   } else {
@@ -80,12 +117,21 @@ router.get('/filter', (req, res) => {
         })
         const records = recordList.filter(record => showYearMonth(record) === month)
         records.forEach(record => {
-          // 顯示 總金額
-          totalAmount += record.amount
+          // 顯示 金額
+          if (record.sort === '收入') {
+            totalIncome += record.amount
+          }
+          if (record.sort === '支出') {
+            totalExpense += record.amount
+          }
+          totalProfit = totalIncome - totalExpense
           // 顯示 日期格式
           record.date = showYearMonthDate(record)
+          // 顯示 收入、支出用顏色區別
+          const sort = record.sort === '收入' ? false : true
+          record.expense = sort
         })
-        res.render('index', { records, totalAmount, category, month, months })
+        res.render('index', { records, totalExpense, category, month, months, totalIncome, totalProfit })
       })
       .catch(error => console.log(error))
   }

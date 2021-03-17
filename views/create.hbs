@@ -1,5 +1,20 @@
 <div id="create-form" style="width:40%;margin:2em auto;">
   <form action="/record" method="POST">
+    <div class="form-group form-sort">
+      <div class="form-check form-check-inline">
+        <p class="lead mt-3 mr-3">記帳類型</p>
+        <input class="form-check-input expense" type="radio" name="sort" id="expense" value="支出" checked>
+        <label class="form-check-label" for="expense">
+          支出
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input income" type="radio" name="sort" id="income" value="收入">
+        <label class="form-check-label" for="income">
+          收入
+        </label>
+      </div>
+    </div>
     <div class="form-group" style="align-self:center;">
       <label for="category">類別</label>
       <select class="form-control" id="category" name="category" required>
@@ -8,7 +23,7 @@
         <option>交通出行</option>
         <option>休閒娛樂</option>
         <option>餐飲食品</option>
-        <option>其他</option>
+        <option>其他支出</option>
       </select>
     </div>
     <div class="form-group">
@@ -17,7 +32,7 @@
     </div>
     <div class="form-group">
       <label for="date">日期</label>
-      <input type="date" class="form-control" id="date" name="date" value="return todayDate()" required>
+      <input type="date" class="form-control" id="date" name="date" required>
     </div>
     <div class="form-group">
       <label for="amount">金額</label>
@@ -30,27 +45,27 @@
     <button type="submit" class="btn btn-success" style="margin-top: 20px;">新增支出</button>
   </form>
 </div>
+
 <script>
-  const dateValue = document.querySelector('#date').value
-  console.log(dateValue)
-  dateValue = '2020-01-01'
-  console.log(dateValue)
-  Date.prototype.toDateInputValue = (function () {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0, 10);
+  const formSort = document.querySelector('.form-sort')
+  const category = document.querySelector('#category')
+  formSort.addEventListener('click', (e) => {
+    console.log(e.target)
+    if (e.target.matches('.income')) {
+      category.innerHTML = `
+        <option value="" style="display: none;">請選擇類別</option>
+        <option>薪水</option>
+        <option>其他收入</option>
+      `
+    } else if (e.target.matches('.expense')) {
+      category.innerHTML = `
+        <option value="" style="display: none;">請選擇類別</option>
+        <option>家居物業</option>
+        <option>交通出行</option>
+        <option>休閒娛樂</option>
+        <option>餐飲食品</option>
+        <option>其他支出</option>
+      `
+    }
   })
-  function todayDate() {
-    const today = new Date()
-    const year = today.getFullYear()
-    let month = today.getMonth() + 1
-    let date = today.getDate()
-    if (month < 10) {
-      month = '0' + month.toString()
-    }
-    if (date < 10) {
-      date = '0' + date.toString()
-    }
-    return `${year}-${month}-${date}`
-  }
 </script>

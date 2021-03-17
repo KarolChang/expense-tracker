@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
     .then(records => records.forEach(record => {
       totalExpense += record.amount
     }))
-  Record.find({ userId })
+  return Record.find({ userId })
     .lean()
     .sort({ date: 'desc' })
     .then(records => {
@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
       })
       // 計算 盈餘
       totalProfit = totalIncome - totalExpense
-      res.render('index', { records, totalExpense, months, totalIncome, totalProfit })
+      return res.render('index', { records, totalExpense, months, totalIncome, totalProfit })
     })
     .catch(error => console.log(error))
 })

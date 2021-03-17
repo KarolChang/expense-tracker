@@ -50,7 +50,6 @@
   const formSort = document.querySelector('.form-sort')
   const category = document.querySelector('#category')
   formSort.addEventListener('click', (e) => {
-    console.log(e.target)
     if (e.target.matches('.income')) {
       category.innerHTML = `
         <option value="" style="display: none;">請選擇類別</option>

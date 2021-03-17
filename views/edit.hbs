@@ -51,10 +51,30 @@
 </div>
 
 <script>
-  const formSort = document.querySelector('.form-sort')
   const category = document.querySelector('#category')
+  // 判斷目前是哪一個被選擇
+  const income = document.querySelector('#income')
+  const expense = document.querySelector('#expense')
+  if (income.checked) {
+    category.innerHTML = `
+      <option value="" style="display: none;">請選擇類別</option>
+      <option>薪水</option>
+      <option>其他收入</option>
+    `
+  }
+  if (expense.checked) {
+    category.innerHTML = `
+      <option value="" style="display: none;">請選擇類別</option>
+      <option>家居物業</option>
+      <option>交通出行</option>
+      <option>休閒娛樂</option>
+      <option>餐飲食品</option>
+      <option>其他支出</option>
+    `
+  }
+  // 變換項目
+  const formSort = document.querySelector('.form-sort')
   formSort.addEventListener('click', (e) => {
-    console.log(e.target)
     if (e.target.matches('.income')) {
       category.innerHTML = `
         <option value="" style="display: none;">請選擇類別</option>

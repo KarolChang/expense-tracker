@@ -15,14 +15,22 @@ require('./config/mongoose')
 const PORT = process.env.PORT
 const app = express()
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({
+  defaultLayout: 'main',
+  extname: '.hbs',
+  helpers: {
+    eq: function(a, b) {
+      return (a === b)
+    }
+  }
+}))
 app.set('view engine', 'hbs')
 
 // 使用 Handlebars 自定義 helper
-const Handlebars = require('handlebars')
-Handlebars.registerHelper('eq', (a, b) => {
-  return (a === b)
-})
+// const Handlebars = require('handlebars')
+// Handlebars.registerHelper('eq', (a, b) => {
+//   return (a === b)
+// })
 
 app.use(session({
   secret: process.env.SESSION_SECRET,

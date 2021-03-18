@@ -5,7 +5,7 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
 router.get('/login', (req, res) => {
-  return res.render('login')
+  res.render('login', { email: req.session.email })
 })
 
 router.post('/login', passport.authenticate('local', {
@@ -15,13 +15,12 @@ router.post('/login', passport.authenticate('local', {
 }))
 
 router.get('/register', (req, res) => {
-  return res.render('register')
+  res.render('register')
 })
 
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   const errors = []
-  const registeredMessage = `${email}註冊成功!`
   if (!name || !email || !password || !confirmPassword) {
     errors.push({ message: '所有欄位都是必填的!'})
   }
@@ -45,13 +44,18 @@ router.post('/register', (req, res) => {
           password: hash
         }))
     })
-    .then(() => res.render('login', { email, registeredMessage }))
+    .then(() => {
+      req.session.email = req.body.email
+      req.flash('success_msg', `${req.body.email}註冊成功!`)
+      res.redirect('/users/login')
+    })
     .catch(err => console.log(err))
 })
 
 router.get('/logout', (req, res) => {
   req.logout()
   req.flash('success_msg', '您已經成功登出!')
+  req.session.email = ''
   res.redirect('/users/login')
 })
 

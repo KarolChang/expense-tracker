@@ -3,15 +3,15 @@
     <div class="form-group form-sort">
       <div class="form-check form-check-inline">
         <p class="lead mt-3 mr-3">記帳類型</p>
-        <input class="form-check-input expense" type="radio" name="sort" id="expense" value="支出" {{#compare
-          record.sort '===' '支出' }}checked{{/compare}}>
+        <input class="form-check-input expense" type="radio" name="sort" id="expense" value="支出" {{#if (eq
+          record.sort '支出' ) }}checked{{/if}}>
         <label class="form-check-label" for="expense">
           支出
         </label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input income" type="radio" name="sort" id="income" value="收入" {{#compare
-          record.sort '===' '收入' }}checked{{/compare}}>
+        <input class="form-check-input income" type="radio" name="sort" id="income" value="收入" {{#if (eq
+          record.sort '收入' ) }}checked{{/if}}>
         <label class="form-check-label" for="income">
           收入
         </label>
@@ -20,19 +20,18 @@
     <div class="form-group">
       <label for="category">類別</label>
       <select class="form-control" id="category" name="category" required>
-        {{#compare record.sort '===' '支出' }}
+        {{#if (eq record.sort '支出') }}
         <option style="display:none">{{record.category}}</option>
         <option>家居物業</option>
         <option>交通出行</option>
         <option>休閒娛樂</option>
         <option>餐飲食品</option>
         <option>其他支出</option>
-        {{/compare}}
-        {{#compare record.sort '===' '收入' }}
+        {{else}}
         <option style="display:none">{{record.category}}</option>
         <option>薪水</option>
         <option>其他收入</option>
-        {{/compare}}
+        {{/if}}
       </select>
     </div>
     <div class="form-group">

@@ -12,6 +12,10 @@ router.get('/create', (req, res) => {
 // storage created info and show on index page
 router.post('/', (req, res) => {
   const records = req.body
+  if (records.name.length > 10) {
+    const nameMsg = '項目欄位不可超過10字元!'
+    return res.render('create', { records, nameMsg })
+  }
   const sort = records.sort
   records.userId = req.user._id
   Category.find({ sort })
@@ -47,6 +51,11 @@ router.put('/:id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   const recordEdit = req.body
+  recordEdit._id = _id
+  if (recordEdit.name.length > 10) {
+    const nameMsg = '項目欄位不可超過10字元!'
+    return res.render('edit', { record: recordEdit, nameMsg })
+  }
   Category.find()
     .lean()
     .then(categories => {

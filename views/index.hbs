@@ -84,11 +84,12 @@
         </li>
         {{!-- records --}}
         {{#each records}}
-        <li class="list-group-item" {{#if this.expense}}style="color:white;" {{else}}style="color:lawngreen;" {{/if}}>
+        <li class="list-group-item" {{#if (eq this.sort '支出' )}}style="color:white;" {{else}}style="color:lawngreen;"
+          {{/if}}>
           <div class="row align-items-center">
             <div class="col-3 d-flex align-items-center">
               <div class="category-icon" style="width:4em;">
-                {{{this.categoryIcon}}}
+                <i class="{{this.categoryIcon}} fa-2x"></i>
               </div>
               <div class="item">
                 <div style="font-size: 1.2em;">{{this.name}}</div>

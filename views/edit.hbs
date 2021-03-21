@@ -1,5 +1,6 @@
 <div id="edit-form" style="width:40%;margin:2em auto;">
   <form action="/record/{{record._id}}?_method=PUT" method="POST">
+    {{> message}}
     <div class="form-group form-sort">
       <div class="form-check form-check-inline">
         <p class="lead mt-3 mr-3">記帳類型</p>

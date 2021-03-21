@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "name": "家居物業",
+      "sort": "支出",
+      "icon": "fas fa-home"
+    },
+    {
+      "name": "交通出行",
+      "sort": "支出",
+      "icon": "fas fa-shuttle-van"
+    },
+    {
+      "name": "休閒娛樂",
+      "sort": "支出",
+      "icon": "fas fa-grin-beam"
+    },
+    {
+      "name": "餐飲食品",
+      "sort": "支出",
+      "icon": "fas fa-utensils"
+    },
+    {
+      "name": "其他支出",
+      "sort": "支出",
+      "icon": "fas fa-pen"
+    },
+    {
+      "name": "薪水",
+      "sort": "收入",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "name": "其他收入",
+      "sort": "收入",
+      "icon": "fas fa-search-dollar"
+    }
+  ]
+}

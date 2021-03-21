@@ -31,9 +31,6 @@ router.get('/', (req, res) => {
         months = renderMonthFilter(record, months)
         // 顯示 日期格式
         record.date = showYearMonthDate(record)
-        // 顯示 收入、支出用顏色區別
-        const sort = record.sort === '收入' ? false : true
-        record.expense = sort
       })
       // 計算 盈餘
       totalProfit = totalIncome - totalExpense
@@ -74,9 +71,6 @@ router.get('/filter', (req, res) => {
           totalProfit = totalIncome - totalExpense
           // 顯示 日期格式
           record.date = showYearMonthDate(record)
-          // 顯示 收入、支出用顏色區別
-          const sort = record.sort === '收入' ? false : true
-          record.expense = sort
         })
         res.render('index', { records, totalExpense, month, months, totalIncome, totalProfit })
       })
@@ -99,9 +93,6 @@ router.get('/filter', (req, res) => {
           totalProfit = totalIncome - totalExpense
           // 顯示 日期格式
           record.date = showYearMonthDate(record)
-          // 顯示 收入、支出用顏色區別
-          const sort = record.sort === '收入' ? false : true
-          record.expense = sort
         })
         res.render('index', { records, totalExpense, category, months, totalIncome, totalProfit })
       })
@@ -127,9 +118,6 @@ router.get('/filter', (req, res) => {
           totalProfit = totalIncome - totalExpense
           // 顯示 日期格式
           record.date = showYearMonthDate(record)
-          // 顯示 收入、支出用顏色區別
-          const sort = record.sort === '收入' ? false : true
-          record.expense = sort
         })
         res.render('index', { records, totalExpense, category, month, months, totalIncome, totalProfit })
       })

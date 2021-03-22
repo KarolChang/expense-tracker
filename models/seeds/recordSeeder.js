@@ -14,31 +14,32 @@ const USER_SEED = [{
 const recordCount = 5
 
 db.once('open', async () => {
+  const createdUsers = []
+  // 建立User
   try {
-    await new Promise((resolve) => {
-      USER_SEED.forEach((user, index) => {
-        bcrypt.genSalt(10)
-          .then(salt => bcrypt.hash(user.password, salt))
-          .then(hash => {
-            return User.create({
-              name: user.name,
-              email: user.email,
-              password: hash
-            })
-          })
-          .then(user => {
-            resolve(Promise.all(Array.from({ length: recordCount }, (_, i) => {
-              const record = recordList[i + index * recordCount]
-              record.userId = user._id
-              console.log(record)
-              return Record.create(record)
-            })))
-          })
+    for (const user of USER_SEED) {
+      const hash = await bcrypt.genSalt(10).then(salt => bcrypt.hash(user.password, salt))
+      const createdUser = await User.create({
+        name: user.name,
+        email: user.email,
+        password: hash
       })
-    })
+      createdUsers.push(createdUser)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+  // 建立Record
+  try {
+    for (const [userIndex, user] of createdUsers.entries()) {
+      for (const record of recordList.slice(userIndex, userIndex + recordCount)) {
+        record.userId = user._id
+        await Record.create(record)
+      }
+    }
     console.log('recordSeeder done!')
     process.exit()
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    console.log(error)
   }
 })

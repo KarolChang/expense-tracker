@@ -14,9 +14,9 @@ db.once('open', async () => {
         }))
       )
     })
-    console.log('categorySeeder done!')
-    process.exit()
   } catch (e) {
     console.log(e)
   }
+  console.log('categorySeeder done!')
+  process.exit()
 })

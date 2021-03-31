@@ -55,57 +55,52 @@ router.get('/filter', async (req, res) => {
         months = renderMonthFilter(record, months)
       })
       const records = recordList.filter(record => showYearMonth(record) === month)
-      records.forEach(record => {
-        // 顯示 金額
-        if (record.sort === '收入') {
-          totalIncome += record.amount
-        }
-        if (record.sort === '支出') {
-          totalExpense += record.amount
-        }
-        totalProfit = totalIncome - totalExpense
+      for (const record of records) {
         // 顯示 日期格式
         record.date = showYearMonthDate(record)
-        return res.render('index', { records, totalExpense, month, months, totalIncome, totalProfit })
-      })
+        // 顯示 金額
+        if (record.sort === '支出') {
+          totalExpense += record.amount
+        } else {
+          totalIncome += record.amount
+        }
+      }
+      totalProfit = totalIncome - totalExpense
+      return res.render('index', { records, totalExpense, month, months, totalIncome, totalProfit })
     } else if (month === '全部月份') {
       const records = await Record.find({ category, userId })
         .lean().sort({ date: 'desc' })
-      records.forEach(record => {
+      for (const record of records) {
         // 顯示 以月份篩選 的欄位
         months = renderMonthFilter(record, months)
-        // 顯示 金額
-        if (record.sort === '收入') {
-          totalIncome += record.amount
-        }
-        if (record.sort === '支出') {
-          totalExpense += record.amount
-        }
-        totalProfit = totalIncome - totalExpense
         // 顯示 日期格式
         record.date = showYearMonthDate(record)
-      })
+        // 顯示 金額
+        if (record.sort === '支出') {
+          totalExpense += record.amount
+        } else {
+          totalIncome += record.amount
+        }
+      }
+      totalProfit = totalIncome - totalExpense
       return res.render('index', { records, totalExpense, category, months, totalIncome, totalProfit })
     } else {
       const recordList = await Record.find({ category, userId })
         .lean().sort({ date: 'desc' })
-      recordList.forEach(record => {
+      const records = recordList.filter(record => showYearMonth(record) === month)
+      for (const record of records) {
         // 顯示 以月份篩選 的欄位
         months = renderMonthFilter(record, months)
-      })
-      const records = recordList.filter(record => showYearMonth(record) === month)
-      records.forEach(record => {
-        // 顯示 金額
-        if (record.sort === '收入') {
-          totalIncome += record.amount
-        }
-        if (record.sort === '支出') {
-          totalExpense += record.amount
-        }
-        totalProfit = totalIncome - totalExpense
         // 顯示 日期格式
         record.date = showYearMonthDate(record)
-      })
+        // 顯示 金額
+        if (record.sort === '支出') {
+          totalExpense += record.amount
+        } else {
+          totalIncome += record.amount
+        }
+      }
+      totalProfit = totalIncome - totalExpense
       return res.render('index', { records, totalExpense, category, month, months, totalIncome, totalProfit })
     }
   } catch (err) {

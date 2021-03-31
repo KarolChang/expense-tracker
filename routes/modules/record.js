@@ -6,48 +6,45 @@ const { showYearMonthDate } = require('../../utils/dateFormat')
 
 // set route for create page
 router.get('/create', (req, res) => {
-  res.render('create')
+  return res.render('create')
 })
 
 // storage created info and show on index page
-router.post('/', (req, res) => {
-  const records = req.body
-  if (records.name.length > 10) {
-    const nameMsg = '項目欄位不可超過10字元!'
-    return res.render('create', { records, nameMsg })
+router.post('/', async (req, res) => {
+  try {
+    const records = req.body
+    if (records.name.length > 10) {
+      const nameMsg = '項目欄位不可超過10字元!'
+      return res.render('create', { records, nameMsg })
+    }
+    const sort = records.sort
+    records.userId = req.user._id
+    const categories = await Category.find({ sort }).lean()
+    const category = categories.find(category => records.category === category.name)
+    records.categoryIcon = category.icon
+    await Record.create(records)
+    req.flash('success_msg', `「${records.sort} - ${records.name}」新增成功!`)
+    return res.redirect('/')
+  } catch (err) {
+    console.warn(err)
   }
-  const sort = records.sort
-  records.userId = req.user._id
-  Category.find({ sort })
-    .lean()
-    .then(categories => {
-      const category = categories.find(category => records.category === category.name)
-      records.categoryIcon = category.icon
-      return Record.create(records)
-    })
-    .then(() => {
-      req.flash('success_msg', `「${records.sort} - ${records.name}」新增成功!`)
-      res.redirect('/')
-    })
-    .catch(error => console.log(error))
 })
 
 // set route for edit page
-router.get('/:id', (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-  return Record.findOne({ userId, _id })
-    .lean()
-    .then(record => {
-      // 給畫面呈現的日期格式
-      record.date = showYearMonthDate(record)
-      return res.render('edit', { record })
-    })
-    .catch(error => console.log(error))
+router.get('/:id', async (req, res) => {
+  try {
+    const userId = req.user._id
+    const _id = req.params.id
+    const record = await Record.findOne({ userId, _id }).lean()
+    record.date = showYearMonthDate(record)
+    return res.render('edit', { record })
+  } catch (err) {
+    console.warn(err)
+  }
 })
 
 // storage edit info and show on index page
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   const recordEdit = req.body
@@ -56,32 +53,31 @@ router.put('/:id', (req, res) => {
     const nameMsg = '項目欄位不可超過10字元!'
     return res.render('edit', { record: recordEdit, nameMsg })
   }
-  Category.find()
-    .lean()
-    .then(categories => {
-      const category = categories.find(category => category.name === recordEdit.category)
-      recordEdit.categoryIcon = category.icon
-    })
-  return Record.findOne({ userId, _id })
-    .then(record => {
-      Object.assign(record, recordEdit)
-      return record.save()
-    })
-    .then(record => {
-      req.flash('success_msg', `「${record.sort} - ${record.name}」編輯成功!`)
-      res.redirect('/')
-    })
-    .catch(error => console.log(error))
+  try {
+    const categories = await Category.find().lean()
+    const category = categories.find(category => category.name === recordEdit.category)
+    recordEdit.categoryIcon = category.icon
+    const record = await Record.findOne({ userId, _id })
+    Object.assign(record, recordEdit)
+    await record.save()
+    req.flash('success_msg', `「${record.sort} - ${record.name}」編輯成功!`)
+    return res.redirect('/')
+  } catch (err) {
+    console.warn(err)
+  }
 })
 
 // delete expense record
-router.delete('/:id', (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-  return Record.findOne({ userId, _id })
-    .then(record => record.remove())
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+router.delete('/:id', async (req, res) => {
+  try {
+    const userId = req.user._id
+    const _id = req.params.id
+    const record = await Record.findOne({ userId, _id })
+    record.remove()
+    return res.redirect('/')
+  } catch (err) {
+    console.warn(err)
+  }
 })
 
 module.exports = router

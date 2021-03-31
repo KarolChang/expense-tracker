@@ -32,7 +32,7 @@ db.once('open', async () => {
   // 建立Record
   try {
     for (const [userIndex, user] of createdUsers.entries()) {
-      for (const record of recordList.slice(userIndex, userIndex + recordCount)) {
+      for (const record of recordList.slice((userIndex * recordCount), (recordCount + userIndex * recordCount))) {
         record.userId = user._id
         await Record.create(record)
       }

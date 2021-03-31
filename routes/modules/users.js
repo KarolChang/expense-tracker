@@ -5,7 +5,7 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
 router.get('/login', (req, res) => {
-  res.render('login', { email: req.session.email })
+  return res.render('login', { email: req.session.email })
 })
 
 router.post('/login', passport.authenticate('local', {
@@ -15,9 +15,10 @@ router.post('/login', passport.authenticate('local', {
 }))
 
 router.get('/register', (req, res) => {
-  res.render('register')
+  return res.render('register')
 })
 
+// post
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   const errors = []
@@ -50,6 +51,35 @@ router.post('/register', (req, res) => {
       res.redirect('/users/login')
     })
     .catch(err => console.log(err))
+})
+
+router.post('/register', async (req, res) => {
+  const { name, email, password, confirmPassword } = req.body
+  const errors = []
+  if (!name || !email || !password || !confirmPassword) {
+    errors.push({ message: '所有欄位都是必填的!'})
+  }
+  if (password !== confirmPassword) {
+    errors.push({ message: '密碼與確認密碼不相符!' })
+  }
+  if (errors.length) {
+    return res.render('register', { name, email, password, confirmPassword, errors })
+  }
+  try {
+    const user = await User.findOne({ email })
+    if (user) {
+      errors.push({ message: '這個 Email 已經被註冊過了!'})
+      return res.render('register', { name, email, password, confirmPassword, errors })
+    }
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+    await User.create({ name, email, password: hash })
+    req.session.email = req.body.email
+    req.flash('success_msg', `${req.body.email}註冊成功!`)
+    return res.redirect('/users/login')
+  } catch (err) {
+    console.warn(err)
+  }
 })
 
 router.get('/logout', (req, res) => {

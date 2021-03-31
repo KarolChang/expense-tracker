@@ -25,4 +25,5 @@ function renderMonthFilter (record, months) {
   return months
 }
 
+
 module.exports = { showYearMonth, showYearMonthDate, renderMonthFilter }

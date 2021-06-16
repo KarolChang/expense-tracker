@@ -18,15 +18,21 @@ router.get('/', async (req, res) => {
       months = renderMonthFilter(record, months)
       // 顯示 日期格式
       record.date = showYearMonthDate(record)
-    })
-    // 顯示 支出&收入 金額
-    for (const record of records) {
+      // 顯示 支出&收入 金額
       if (record.sort === '支出') {
         totalExpense += record.amount
       } else {
         totalIncome += record.amount
       }
-    }
+    })
+    // 顯示 支出&收入 金額
+    // for (const record of records) {
+    //   if (record.sort === '支出') {
+    //     totalExpense += record.amount
+    //   } else {
+    //     totalIncome += record.amount
+    //   }
+    // }
     // 計算 盈餘
     totalProfit = totalIncome - totalExpense
     return res.render('index', { records, totalExpense, months, totalIncome, totalProfit })
